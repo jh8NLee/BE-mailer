@@ -1,4 +1,4 @@
-package com.g25.mailer.User.respository;
+package com.g25.mailer.User.repository;
 
 import com.g25.mailer.User.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

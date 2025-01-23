@@ -1,10 +1,10 @@
 package com.g25.mailer.User.service;
 
-import com.g25.mailer.User.dto.UserCreateReqt;
-import com.g25.mailer.User.dto.UserResp;
-import com.g25.mailer.User.dto.UserUpdateReqt;
+import com.g25.mailer.User.dto.UserCreateReq;
+import com.g25.mailer.User.dto.UserRes;
+import com.g25.mailer.User.dto.UserUpdateReq;
 import com.g25.mailer.User.entity.User;
-import com.g25.mailer.User.respository.UserRepository;
+import com.g25.mailer.User.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class UserService {
 
     // CREATE: 사용자 생성
     @Transactional
-    public UserResp createUser(UserCreateReqt request) {
+    public UserRes createUser(UserCreateReq request) {
         if (userRepository.existsByLoginId(request.getLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 로그인 ID입니다.");
         }
@@ -39,28 +39,28 @@ public class UserService {
                 .build();
 
         User savedUser = userRepository.save(user);
-        return UserResp.fromEntity(savedUser);
+        return UserRes.fromEntity(savedUser);
     }
 
     // READ: 전체 사용자 조회
     @Transactional(readOnly = true)
-    public List<UserResp> getAllUsers() {
+    public List<UserRes> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(UserResp::fromEntity)
+                .map(UserRes::fromEntity)
                 .collect(Collectors.toList());
     }
 
     // READ: 특정 사용자 조회
     @Transactional(readOnly = true)
-    public UserResp getUserById(Long id) {
+    public UserRes getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        return UserResp.fromEntity(user);
+        return UserRes.fromEntity(user);
     }
 
     // UPDATE: 사용자 정보 수정
     @Transactional
-    public UserResp updateUser(Long id, UserUpdateReqt request) {
+    public UserRes updateUser(Long id, UserUpdateReq request) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
@@ -71,7 +71,7 @@ public class UserService {
         existingUser.setStatus(request.getStatus());
 
         User updatedUser = userRepository.save(existingUser);
-        return UserResp.fromEntity(updatedUser);
+        return UserRes.fromEntity(updatedUser);
     }
 
     // DELETE: 사용자 삭제

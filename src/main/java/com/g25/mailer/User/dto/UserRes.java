@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserResp {
+public class UserRes {
     private Long id;
     private String loginId;
     private String name;
@@ -19,8 +19,8 @@ public class UserResp {
     private User.Role role;
     private User.Status status;
 
-    public static UserResp fromEntity(User user) {
-        return UserResp.builder()
+    public static UserRes fromEntity(User user) {
+        return UserRes.builder()
                 .id(user.getId())
                 .loginId(user.getLoginId())
                 .name(user.getName())

@@ -1,7 +1,7 @@
 package com.g25.mailer.User.controller;
 
 import com.g25.mailer.User.entity.User;
-import com.g25.mailer.User.respository.UserRepository;
+import com.g25.mailer.User.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
