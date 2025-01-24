@@ -54,6 +54,9 @@ public class User {
         this.updatedDt = LocalDateTime.now();
     }
 
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
     public enum Role {
         ADMIN, USER
     }

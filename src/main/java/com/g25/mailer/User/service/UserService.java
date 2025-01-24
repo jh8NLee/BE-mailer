@@ -1,15 +1,18 @@
 package com.g25.mailer.User.service;
 
 import com.g25.mailer.User.dto.UserCreateReq;
+import com.g25.mailer.User.dto.UserLoginReq;
 import com.g25.mailer.User.dto.UserRes;
 import com.g25.mailer.User.dto.UserUpdateReq;
 import com.g25.mailer.User.entity.User;
 import com.g25.mailer.User.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,7 +20,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    /**
+     * User CRUD
+     */
     // CREATE: 사용자 생성
     @Transactional
     public UserRes createUser(UserCreateReq request) {
@@ -30,13 +37,14 @@ public class UserService {
 
         User user = User.builder()
                 .loginId(request.getLoginId())
-                .password(request.getPassword()) // 암호화 필요 시 적용
+                .password(passwordEncoder.encode(request.getPassword())) // 비밀번호 암호화
                 .name(request.getName())
                 .email(request.getEmail())
                 .contact(request.getContact())
                 .role(User.Role.USER)
                 .status(User.Status.ACTIVE)
                 .build();
+
 
         User savedUser = userRepository.save(user);
         return UserRes.fromEntity(savedUser);
@@ -82,5 +90,6 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
 
 }
