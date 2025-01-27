@@ -1,6 +1,7 @@
 package com.g25.mailer.User.controller;
 
 import com.g25.mailer.User.dto.UserLoginReq;
+import com.g25.mailer.User.dto.UserSessionRes;
 import com.g25.mailer.User.entity.User;
 import com.g25.mailer.User.service.AuthService;
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginReq request, HttpSession session) {
         User user = authService.authenticate(request.getLoginId(), request.getPassword());
-        session.setAttribute("user", user); // 세션 저장
+        session.setAttribute("user", new UserSessionRes(user.getLoginId(), user.getName(), user.getRole())); //세션에 민감 정보 저장 금지
         return ResponseEntity.ok("로그인 성공");
     }
 
