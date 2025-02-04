@@ -9,11 +9,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    boolean existsByEmail(String email);
-
-    boolean existsByLoginId(String loginId);
-
-    boolean existsById(Long id);
-
-    Optional<User> findByLoginId(String loginId);
+    Optional<User> findByEmail(String email); //email로 사용자 정보 가져옴
 }
+
+

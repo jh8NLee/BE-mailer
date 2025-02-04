@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
+//@Getter
+//@Setter
+//@NoArgsConstructor
 public class UserLoginReq {
 
-    private String loginId;
-    private String password;
+//    private String loginId;
+//    private String password;
 
 }
