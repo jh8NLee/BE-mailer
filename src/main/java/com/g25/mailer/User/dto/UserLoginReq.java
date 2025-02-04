@@ -1,8 +1,4 @@
-package com.g25.mailer.User.dto;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package com.g25.mailer.user.dto;
 
 //@Getter
 //@Setter

@@ -1,8 +1,8 @@
-package com.g25.mailer.User.service;
+package com.g25.mailer.user.service;
 
-import com.g25.mailer.User.dto.*;
-import com.g25.mailer.User.entity.User;
-import com.g25.mailer.User.repository.UserRepository;
+import com.g25.mailer.user.dto.*;
+import com.g25.mailer.user.entity.User;
+import com.g25.mailer.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest {

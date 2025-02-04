@@ -1,13 +1,4 @@
-package com.g25.mailer.User.dto;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+package com.g25.mailer.user.dto;
 
 //@Data
 //@NoArgsConstructor

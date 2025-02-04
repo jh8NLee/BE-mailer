@@ -1,19 +1,13 @@
-package com.g25.mailer.User.service;
+package com.g25.mailer.user.service;
 
-import com.g25.mailer.User.dto.*;
-import com.g25.mailer.User.entity.User;
-import com.g25.mailer.User.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.g25.mailer.user.dto.AddUserRequest;
+import com.g25.mailer.user.entity.User;
+import com.g25.mailer.user.repository.UserRepository;
 
-
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -23,11 +17,11 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Long save(AddUserRequest dto) {
-        return userRepository.save(User
-                .builder().email(dto.getEmail())
-                //패스워드 암호화 : 인코딩용 빈을 사용하여 암호화한후 저장
-                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
-                .build()).getId();
+        return userRepository.save(
+                User.builder()
+                    .email(dto.getEmail())
+                    .password(bCryptPasswordEncoder.encode(dto.getPassword())) //패스워드 암호화 : 인코딩용 빈을 사용하여 암호화한후 저장
+                    .build()).getId();
     }
 
 //
@@ -100,6 +94,5 @@ public class UserService {
 //        }
 //        userRepository.deleteById(id);
 //    }
-
 
 }

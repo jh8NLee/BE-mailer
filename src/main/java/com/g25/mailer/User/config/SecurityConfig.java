@@ -1,7 +1,7 @@
-package com.g25.mailer.User.config;
+package com.g25.mailer.user.config;
 
 
-import com.g25.mailer.User.service.UserDetailService;
+import com.g25.mailer.user.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

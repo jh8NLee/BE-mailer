@@ -1,52 +1,50 @@
-package com.g25.mailer.User.controller;
+package com.g25.mailer.user.controller;
 
-import com.g25.mailer.User.dto.AddUserRequest;
-import com.g25.mailer.User.entity.User;
-import com.g25.mailer.User.repository.UserRepository;
-import com.g25.mailer.User.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
+import com.g25.mailer.user.common.CommonResponse;
+import com.g25.mailer.user.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
+@RestController
 @RequiredArgsConstructor
-@Controller
 public class UserApiController {
 
     private final UserService userService;
 
-    @PostMapping("/user")
-    public String signup(AddUserRequest request) {
-        userService.save(request); //로그인 메서드 호출
-        return "redirect:/login"; //회원가입이 완료된 이후에 로그인 페이지로 이동
-    }
-
+    // [QUIZ] 아래 에러 수정하기
+//    @PostMapping("/user")
+//    public CommonResponse<String> signup(AddUserRequest request) {
+//        userService.save(request); //로그인 메서드 호출
+//        return CommonResponse.success(AddUserResponse.builder()
+//                                                     .email(request.getEmail())
+//                                                     .build());
+//    }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response,
-                SecurityContextHolder.getContext().getAuthentication()); //핸들러가 logout메서드 호출 & 로그아웃
-        return "redirect:/login";
+    public CommonResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        new SecurityContextLogoutHandler()
+                .logout(request, response, SecurityContextHolder.getContext().getAuthentication()); //핸들러가 logout메서드 호출 & 로그아웃
+        return CommonResponse.success();
     }
+
 //    // CREATE: 사용자 등록
 //    @PostMapping
 //    public ResponseEntity<User> createUser(@RequestBody User user) {
-//        if (userRepository.existsByLoginId(user.getLoginId()) || userRepository.existsByEmail(user.getEmail())) {
+//        if (userRepository.existsByLoginId(user.getLoginId()) || userRepository.existsByEmail(
+//                user.getEmail())) {
 //            return ResponseEntity.badRequest().body(null);
 //        }
 //        User savedUser = userRepository.save(user);
 //        return ResponseEntity.created(URI.create("/api/users/" + savedUser.getId())).body(savedUser);
 //    }
-//
+
 //    // READ: 전체 사용자 조회
 //    @GetMapping
 //    public ResponseEntity<List<User>> getAllUsers() {
@@ -85,6 +83,4 @@ public class UserApiController {
 //            return ResponseEntity.notFound().build();
 //        }
 //    }
-
-
 }
