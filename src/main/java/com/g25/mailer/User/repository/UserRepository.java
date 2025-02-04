@@ -1,6 +1,6 @@
-package com.g25.mailer.User.repository;
+package com.g25.mailer.user.repository;
 
-import com.g25.mailer.User.entity.User;
+import com.g25.mailer.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

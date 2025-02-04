@@ -1,8 +1,5 @@
-package com.g25.mailer.User.service;
+package com.g25.mailer.user.service;
 
-import com.g25.mailer.User.entity.User;
-import com.g25.mailer.User.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 

@@ -1,4 +1,4 @@
-package com.g25.mailer.User.controller;
+package com.g25.mailer.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

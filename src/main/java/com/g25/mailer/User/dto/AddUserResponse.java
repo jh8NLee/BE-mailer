@@ -1,11 +1,12 @@
 package com.g25.mailer.user.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AddUserRequest {
+@Builder
+public class AddUserResponse {
     private String email;
-    private String password;
 }

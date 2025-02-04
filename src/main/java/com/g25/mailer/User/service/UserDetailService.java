@@ -1,6 +1,6 @@
-package com.g25.mailer.User.service;
+package com.g25.mailer.user.service;
 
-import com.g25.mailer.User.repository.UserRepository;
+import com.g25.mailer.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
