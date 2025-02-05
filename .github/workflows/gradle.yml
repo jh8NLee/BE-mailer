@@ -1,24 +1,26 @@
-name: Spring Boot & Gradle CI/CD
+# 1.워크플로 이름 지정
+name: CI
 
+# 2. 워크플로 시작될 조건 지정
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #실행 환경 지정
+    #실행 스텝 지정
     steps:
-      - name: Set up JDK 18
-        uses: actions/setup-java@v3
+      - uses : actions/checkout@v3
+
+
+      - uses: actions/setup-java@v3
         with:
-          java-version: '18'
-          distribution: 'temurin'
-      - name: Check Java Version
-        run: java -version
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name : Grant execute permission for gradlew
+        run : chmod +x gradlew
+
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test
+        run: ./gradlew clean build
