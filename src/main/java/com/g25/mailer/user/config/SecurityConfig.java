@@ -49,7 +49,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/")
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("login")
+                        .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                 )
                 .csrf(AbstractHttpConfigurer::disable) //csrf 비활성화
