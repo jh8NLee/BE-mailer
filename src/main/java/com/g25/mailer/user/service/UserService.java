@@ -24,7 +24,6 @@ public class UserService {
                     .build()).getId();
     }
 
-//
 
 //    /**
 //     * User CRUD

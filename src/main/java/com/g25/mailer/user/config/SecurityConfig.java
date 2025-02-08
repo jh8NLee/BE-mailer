@@ -61,7 +61,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http,
                                                         BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                        UserDetailService userDetailsService) throws Exception {
+                                                        UserDetailService userService) throws Exception {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);

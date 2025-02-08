@@ -36,123 +36,111 @@ public class UserServiceTest {
      * Test: createUser
      */
 //    @Test
-    public void testCreateUser() {
-        AddUserRequest resquest = new AddUserRequest("test4email@test.com", "1234");
-
-        when(userRepository.findByEmail("test4email@test.com"));
-//        when(userRepository.get("testUser")).thenReturn(false);
-//        when(userRepository.existsByEmail("test@example.com")).thenReturn(false);
-        when(passwordEncoder.encode("1234")).thenReturn("encodedPassword");
-
-        User mockUser = User.builder()
-                .id(1L)
-                .loginId("testUser")
-                .password("encodedPassword")
-                .name("Test Name")
-                .email("test@example.com")
-                .contact("123-456-7890")
-                .role(User.Role.USER)
-                .status(User.Status.ACTIVE)
-                .build();
-
-        when(userRepository.save(any(User.class))).thenReturn(mockUser);
-
-        UserRes response = userService.createUser(request);
-
-        assertNotNull(response);
-        assertEquals("testUser", response.getLoginId());
-        assertEquals("Test Name", response.getName());
-        verify(userRepository, times(1)).save(any(User.class));
-    }
+//    public void testCreateUser() {
+//        AddUserRequest request = new AddUserRequest("test4email@test.com", "1234");
+//
+//        when(userRepository.findByEmail("test4email@test.com"));
+////        when(userRepository.get("testUser")).thenReturn(false);
+////        when(userRepository.existsByEmail("test@example.com")).thenReturn(false);
+//        when(passwordEncoder.encode("1234")).thenReturn("encodedPassword");
+//
+//        User mockUser = User.builder()
+//                .password("encodedPassword")
+//                .email("test@example.com")
+//                .build();
+//
+//        when(userRepository.save(any(User.class))).thenReturn(mockUser);
+//
+//        UserRes response = userService.createUser(request);
+//
+//        assertNotNull(response);
+//        assertEquals("testUser", response.getLoginId());
+//        assertEquals("Test Name", response.getName());
+//        verify(userRepository, times(1)).save(any(User.class));
+//    }
 
     /**
      * Test: getAllUsers
      */
 //    @Test
-    public void testGetAllUsers() {
-        User mockUser = User.builder()
-                .id(1L)
-                .loginId("testUser")
-                .password("encodedPassword")
-                .name("Test Name")
-                .email("test@example.com")
-                .contact("123-456-7890")
-                .role(User.Role.USER)
-                .status(User.Status.ACTIVE)
-                .build();
-
-        when(userRepository.findAll()).thenReturn(Collections.singletonList(mockUser));
-
-        List<UserRes> users = userService.getAllUsers();
-
-        assertNotNull(users);
-        assertEquals(1, users.size());
-        assertEquals("testUser", users.get(0).getLoginId());
-    }
+//    public void testGetAllUsers() {
+//        User mockUser = User.builder()
+//                .password("encodedPassword")
+//                .email("test@example.com")
+//                .build();
+//
+//        when(userRepository.findAll()).thenReturn(Collections.singletonList(mockUser));
+//
+//        List<UserRes> users = userService.getAllUsers();
+//
+//        assertNotNull(users);
+//        assertEquals(1, users.size());
+//        assertEquals("testUser", users.get(0).getLoginId());
+//    }
 
     /**
      * Test: getUserById
      */
 //    @Test
-    public void testGetUserById() {
-        User mockUser = User.builder()
-                .id(1L)
-                .loginId("testUser")
-                .password("encodedPassword")
-                .name("Test Name")
-                .email("test@example.com")
-                .contact("123-456-7890")
-                .role(User.Role.USER)
-                .status(User.Status.ACTIVE)
-                .build();
-
-        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
-
-        UserRes userRes = userService.getUserById(1L);
-
-        assertNotNull(userRes);
-        assertEquals("testUser", userRes.getLoginId());
-        assertEquals("Test Name", userRes.getName());
-    }
+//    public void testGetUserById() {
+//        User mockUser = User.builder()
+//                .id(1L)
+//                .loginId("testUser")
+//                .password("encodedPassword")
+//                .name("Test Name")
+//                .email("test@example.com")
+//                .contact("123-456-7890")
+//                .role(User.Role.USER)
+//                .status(User.Status.ACTIVE)
+//                .build();
+//
+//        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
+//
+//        UserRes userRes = userService.getUserById(1L);
+//
+//        assertNotNull(userRes);
+//        assertEquals("testUser", userRes.getLoginId());
+//        assertEquals("Test Name", userRes.getName());
+//    }
 
     /**
      * Test: updateUser
      */
 //    @Test
-    public void testUpdateUser() {
-        UserUpdateReq request = new UserUpdateReq("Updated Name", "updated@example.com", "987-654-3210", User.Role.ADMIN, User.Status.ACTIVE);
-
-        User existingUser = User.builder()
-                .id(1L)
-                .loginId("testUser")
-                .password("encodedPassword")
-                .name("Test Name")
-                .email("test@example.com")
-                .contact("123-456-7890")
-                .role(User.Role.USER)
-                .status(User.Status.ACTIVE)
-                .build();
-
-        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
-        when(userRepository.save(any(User.class))).thenReturn(existingUser);
-
-        UserRes updatedUser = userService.updateUser(1L, request);
-
-        assertNotNull(updatedUser);
-        assertEquals("Updated Name", updatedUser.getName());
-        assertEquals("updated@example.com", updatedUser.getEmail());
-        verify(userRepository, times(1)).save(existingUser);
-    }
+//    public void testUpdateUser() {
+//        UserUpdateReq request = new UserUpdateReq("Updated Name", "updated@example.com", "987-654-3210", User.Role.ADMIN, User.Status.ACTIVE);
+//
+//        User existingUser = User.builder()
+//                .id(1L)
+//                .loginId("testUser")
+//                .password("encodedPassword")
+//                .name("Test Name")
+//                .email("test@example.com")
+//                .contact("123-456-7890")
+//                .role(User.Role.USER)
+//                .status(User.Status.ACTIVE)
+//                .build();
+//
+//        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+//        when(userRepository.save(any(User.class))).thenReturn(existingUser);
+//
+//        UserRes updatedUser = userService.updateUser(1L, request);
+//
+//        assertNotNull(updatedUser);
+//        assertEquals("Updated Name", updatedUser.getName());
+//        assertEquals("updated@example.com", updatedUser.getEmail());
+//        verify(userRepository, times(1)).save(existingUser);
+//    }
 
     /**
      * Test: deleteUser
      */
 //    @Test
-    public void testDeleteUser() {
-        when(userRepository.existsById(1L)).thenReturn(true);
-
-        userService.deleteUser(1L);
-
-        verify(userRepository, times(1)).deleteById(1L);
-    }
+//    public void testDeleteUser() {
+//        when(userRepository.existsById(1L)).thenReturn(true);
+//
+//        userService.deleteUser(1L);
+//
+//        verify(userRepository, times(1)).deleteById(1L);
+//    }
 }
