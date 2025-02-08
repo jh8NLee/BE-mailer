@@ -15,6 +15,6 @@ public class AddUserRequest {
                 .email(email)
                 .password(password)
                 .build();
-    } // end toEntity()
+    }
 
 }

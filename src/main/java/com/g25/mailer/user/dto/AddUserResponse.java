@@ -10,5 +10,4 @@ import lombok.Setter;
 public class AddUserResponse {
     private String email;
 
-
 }
