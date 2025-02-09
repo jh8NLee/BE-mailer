@@ -30,9 +30,8 @@ jobs:
       #gradle build (-x test: 테스트 생략 빌드)
       - name: Build with Gradle
         run: |
-          echo ${{secrets.APPLICATION_YML}} | base64 --decode
+          echo ${{secrets.APPLICATION_YML}} | base64 
            chmod +x ./gradlew
-          ./gradlew clean build
           ./gradlew build -x test
 
 
