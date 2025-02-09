@@ -25,7 +25,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle #빌드 속도를 높이기 위해 gradle 캐시 설정
 
       #Gradle 빌드
       #gradle build (-x test: 테스트 생략 빌드)
@@ -46,13 +45,13 @@ jobs:
 
       # 빌드해서 생긴 JAR 파일을 깃허브 아티팩트로 업로드
       # Artifact를 통해 작업을 완료한 후 데이터를 보관하고 동일한 Workflow의 다른 작업에서 공유
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: g25Server
-          # 업로드할 파일의 경로를 지정 (build/libs,  g25Server jar 파일을 업로드)
-          # 빌드 단계에서 생성된 jar파일
-          path: build/libs/g25Server-0.0.1-SNAPSHOT.jar
+#      - name: Upload build artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: g25Server
+#          # 업로드할 파일의 경로를 지정 (build/libs,  g25Server jar 파일을 업로드)
+#          # 빌드 단계에서 생성된 jar파일
+#          path: build/libs/g25Server-0.0.1-SNAPSHOT.jar
 
 
           
