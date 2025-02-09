@@ -63,3 +63,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+bootJar {
+	archiveBaseName.set('g25Server')
+}
+jar{
+	archiveBaseName.set('g25Server')
+}
