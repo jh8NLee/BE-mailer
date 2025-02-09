@@ -32,7 +32,7 @@ jobs:
         run: |
           echo ${{secrets.APPLICATION_YML}} | base64 
            chmod +x ./gradlew
-          ./gradlew build -x test
+#          ./gradlew build -x test
 
 
       #현재시간가져오기
