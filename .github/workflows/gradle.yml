@@ -51,7 +51,7 @@ jobs:
           name: g25Server
           # 업로드할 파일의 경로를 지정 (build/libs,  g25Server jar 파일을 업로드)
           # 빌드 단계에서 생성된 jar파일
-          path: build/libs/g25Server-0.0.1-SNAPSHOT.jar
+          path: /build/libs/g25Server-0.0.1-SNAPSHOT.jar
 
 
           
