@@ -30,14 +30,15 @@ jobs:
       #gradle build (-x test: 테스트 생략 빌드)
       - name: Build with Gradle
         run: |
-          echo ${{secrets.APPLICATION_YML}} | base64
+          echo ${{secrets.APPLICATION_YML}} | base64 --decode
            chmod +x ./gradlew
+          ./gradlew clean build
           ./gradlew build -x test
-          ./gradlew  clean build
+
 
       #현재시간가져오기
       - name : Get current time
-        users : josStorer/get-current-time@v2.0.2
+        user : josStorer/get-current-time@v2.0.2
         id : current-time
         with :
           format : YYYY-MM-DDTHH-mm-ss
