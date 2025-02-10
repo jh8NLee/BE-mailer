@@ -51,7 +51,7 @@ jobs:
           name: g25Server
           # 업로드할 파일의 경로를 지정 (build/libs,  g25Server jar 파일을 업로드)
           # 빌드 단계에서 생성된 jar파일
-          path: /build/libs/*.jar
+          path: build/libs/*.jar
 
 
   #배포
@@ -70,7 +70,11 @@ jobs:
         with:
           # Project 이름으로 업로드된 artifact를 build/libs 경로에 다운로드
           name: g25Server
-          path: build/libs/*.jar
+          path: build/libs/
+
+      # JAR 파일 존재 여부 확인
+      - name: Check if JAR file exists after download
+        run: ls -alh build/libs/
 
 
       # EC2에 배포
