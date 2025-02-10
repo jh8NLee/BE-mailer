@@ -9,6 +9,9 @@ import com.g25.mailer.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -53,13 +56,8 @@ public class UserService {
 //        return UserRes.fromEntity(savedUser);
 //    }
 //
-//    // READ: 전체 사용자 조회
-//    @Transactional(readOnly = true)
-//    public List<UserRes> getAllUsers() {
-//        return userRepository.findAll().stream()
-//                .map(UserRes::fromEntity)
-//                .collect(Collectors.toList());
-//    }
+
+
 //
 //    // READ: 특정 사용자 조회
 //    @Transactional(readOnly = true)
