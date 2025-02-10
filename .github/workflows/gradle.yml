@@ -70,7 +70,7 @@ jobs:
         with:
           # Project 이름으로 업로드된 artifact를 build/libs 경로에 다운로드
           name: g25Server
-          path: build/libs/
+          path: build/libs/*.jar
 
 
       # EC2에 배포
