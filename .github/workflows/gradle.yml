@@ -9,12 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DB_HOST : ${{DB_HOST}}
-      DB_USERNAME : ${{DB_USERNAME}
-      DB_PASSWORD : ${{DB_PASSWORD}}
-
-
 
     steps:
       - name: Checkout repository
