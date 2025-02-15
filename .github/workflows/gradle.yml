@@ -27,24 +27,17 @@ jobs:
           echo "DB_USER: $DB_USER"
           echo "DB_PASS: $DB_PASS"
 
-      - name: Set application.yml
-        run: |
-          cat <<EOF > src/main/resources/application.yml
-          spring:
-            datasource:
-              url: "${{ secrets.DB_HOST }}"
-              username: "${{ secrets.DB_USERNAME }}"
-              password: "${{ secrets.DB_PASSWORD }}"
-          EOF
-        shell: bash
+
 
       - name: Grant permission for Gradle
         run: chmod +x ./gradlew
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew build -x test
-        shell: bash
+        run: |
+          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+          chmod +x ./gradlew
+          ./gradlew build -x test
 
       - name: Make build artifact
         uses: actions/upload-artifact@v4
