@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  RESOURCE_PATH : ./src/main/resources/application.yml
+  RESOURCE_PATH : src/main/resources/application.yml
 
 
 jobs:
