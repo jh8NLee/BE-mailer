@@ -26,8 +26,7 @@ jobs:
         uses: microsoft/variable-substitution@v1
         with:
           files: src/main/resources/application.yml
-        env :
-          override.value : 'from application.yml'
+
 
       - name : Grant perssion for Gradle
         run : chmod +x ./gradlew
