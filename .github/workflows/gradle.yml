@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  RESOURCE_PATH : src/main/resources/application.yml
 
 
 jobs:
@@ -27,7 +25,7 @@ jobs:
       - name: Set yaml file
         uses: microsoft/variable-substitution@v1
         with:
-          files: ${{ env.RESOURCE_PATH }}
+          files: src/main/resources/application.yml
         env :
           override.value : 'from application.yml'
 
