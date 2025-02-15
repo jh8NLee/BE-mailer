@@ -9,6 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DB_HOST : ${{DB_HOST}}
+      DB_USERNAME : ${{DB_USERNAME}
+      DB_PASSWORD : ${{DB_PASSWORD}}
+
+
 
     steps:
       - name: Checkout repository
@@ -20,19 +26,33 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Debug Environment Variables
+        run: |
+          echo "DB_HOST: $DB_HOST"
+          echo "DB_PORT: $DB_PORT"
+          echo "DB_USER: $DB_USER"
+          echo "DB_PASS: $DB_PASS"
 
+      - name: Set application.yml
+        run: |
+          cat <<EOF > src/main/resources/application.yml
+          spring:
+            datasource:
+              url: "${{ secrets.DB_HOST }}"
+              username: "${{ secrets.DB_USERNAME }}"
+              password: "${{ secrets.DB_PASSWORD }}"
+          EOF
+        shell: bash
 
-      - name : Grant perssion for Gradle
-        run : chmod +x ./gradlew
+      - name: Grant permission for Gradle
+        run: chmod +x ./gradlew
         shell: bash
 
       - name: Build with Gradle
-        run: | 
-          ./gradlew build -x test
-#          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+        run: ./gradlew build -x test
         shell: bash
 
-      - name: make build artifact
+      - name: Make build artifact
         uses: actions/upload-artifact@v4
         with:
           name: g25Server
@@ -56,17 +76,18 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
           chmod 400 private_key.pem
+          trap "rm -f private_key.pem" EXIT  # Ensures key deletion
+
           scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/*.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/g25Server.jar
 
           ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
           if pgrep -f g25Server.jar > /dev/null; then
             echo "서버 실행 중 - 종료 중..."
-            pkill -f g25Server.jar
+            kill -15 $(pgrep -f g25Server.jar)
             sleep 5
           else
             echo "서버가 실행되지 않음 - 새로 시작."
           fi
           nohup java -jar /home/${{ secrets.EC2_USERNAME }}/g25Server.jar > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
           EOF
-
-          rm -f private_key.pem
+        shell: bash
