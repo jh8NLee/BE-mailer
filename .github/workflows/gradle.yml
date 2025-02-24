@@ -95,5 +95,5 @@ jobs:
 #          ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
 #          "pkill -f g25Server.jar; nohup java -jar /home/${{ secrets.EC2_USERNAME }}/g25Server.jar > app.log 2>&1 &"
 #          rm -f private_key.pem
-#
+
 

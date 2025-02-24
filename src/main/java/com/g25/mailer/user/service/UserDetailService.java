@@ -18,8 +18,16 @@ public class UserDetailService implements UserDetailsService {
 
     //사용자이름 == 이메일로 정보가져오는 메서드
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getEmail(),
+                        user.getPassword(),
+                        user.getAuthorities()
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException(email + "는 없는 계정입니다."));
+
+
     }
 
 }

@@ -45,8 +45,8 @@ public class SecurityConfig {
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin //폼 기반 로그인
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/")
+                        .loginPage("/login")  //로그인 페이지 url
+                        .defaultSuccessUrl("/") //로그인 성공시 이동할 페이지를 /로 한다
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")
@@ -54,19 +54,20 @@ public class SecurityConfig {
                 )
                 .csrf(AbstractHttpConfigurer::disable) //csrf 비활성화
                 .build();
+
+
     }
 
 
     //인증 관리사 관련 설정
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http,
-                                                        BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                        UserDetailService userService) throws Exception {
+    public AuthenticationManager authenticationManager(BCryptPasswordEncoder bCryptPasswordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return new ProviderManager(authProvider);
     }
+
 
     //패스워드 인코더 빈
     @Bean

@@ -33,6 +33,21 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+
+    // 추가된 테마 설정 필드 (기본값은 LIGHT)
+    @Column(name = "theme", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Theme theme;
+
+    @Builder
+    public User(String email, String password, Theme theme) {
+        this.email = email;
+        this.password = password;
+        // theme 값이 null일 경우 기본값으로 LIGHT 설정
+        this.theme = theme != null ? theme : Theme.LIGHT;
+    }
+
+
     @Builder
     public User(String email, String password, String auth) {
         this.email = email;
@@ -72,6 +87,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    // 테마 설정에 사용할 enum
+    public enum Theme {
+        LIGHT,
+        DARK
     }
 
 }

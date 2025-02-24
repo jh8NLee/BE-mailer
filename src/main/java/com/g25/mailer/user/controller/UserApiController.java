@@ -2,6 +2,9 @@ package com.g25.mailer.user.controller;
 
 import com.g25.mailer.user.dto.AddUserRequest;
 import com.g25.mailer.user.dto.AddUserResponse;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,7 @@ import java.util.List;
 public class UserApiController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     // [QUIZ] 아래 에러 수정하기
     //회원가입
@@ -35,7 +39,6 @@ public class UserApiController {
                 .build());
     }
 
-
     //로그아웃
     @GetMapping("/logout")
     public CommonResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
@@ -44,8 +47,20 @@ public class UserApiController {
         return CommonResponse.success();
     }
 
-
     //로그인
+    @PostMapping("/login")
+    public CommonResponse<AddUserResponse> login(@RequestBody AddUserRequest request) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+
+        // 인증 시도
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return CommonResponse.success(AddUserResponse.builder()
+                .email(request.getEmail())
+                .build());
+    }
 
 
 //    // CREATE: 사용자 등록
