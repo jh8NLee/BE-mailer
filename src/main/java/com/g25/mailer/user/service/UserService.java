@@ -8,8 +8,12 @@ import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -19,12 +23,54 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private static final String PROFILE_IMAGE_DIR = "uploads/profile_images/";
+
     public Long save(AddUserRequest dto) {
         return userRepository.save(
                 User.builder()
                     .email(dto.getEmail())
                     .password(bCryptPasswordEncoder.encode(dto.getPassword())) //패스워드 암호화 : 인코딩용 빈을 사용하여 암호화한후 저장
                     .build()).getId();
+    }
+
+    public String uploadProfileImage(Long userId, MultipartFile file) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 디렉토리 없으면 생성
+        File uploadDir = new File(PROFILE_IMAGE_DIR);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // 랜덤 UUID + 원본 확장자로 저장
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String newFileName = UUID.randomUUID() + extension;
+
+        File destinationFile = new File(PROFILE_IMAGE_DIR + newFileName);
+        try {
+            file.transferTo(destinationFile);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload profile image", e);
+        }
+
+        // 기존 이미지 삭제 (새 이미지로 교체할 경우)
+        if (user.getProfileImageUrl() != null) {
+            File oldFile = new File(user.getProfileImageUrl());
+            if (oldFile.exists()) {
+                oldFile.delete();
+            }
+        }
+
+        // DB에 새 이미지 경로 저장
+        user.setProfileImageUrl(PROFILE_IMAGE_DIR + newFileName);
+        userRepository.save(user);
+
+        return user.getProfileImageUrl();
+    }
+
+    public void deleteProfileImage(Long userId) {
     }
 
 

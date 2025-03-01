@@ -4,14 +4,10 @@ import java.util.Collection;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Table(name = "users", indexes = {
         @Index(name = "email_idx", columnList = "email")
@@ -32,6 +28,12 @@ public class User implements UserDetails {
 
     @Column(name = "password")
     private String password;
+
+    // 추가된 프로필 이미지 URL 필드
+    @Setter
+    @Getter
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
 
     // 추가된 테마 설정 필드 (기본값은 LIGHT)

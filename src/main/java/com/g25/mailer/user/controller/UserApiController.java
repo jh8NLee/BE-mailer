@@ -2,15 +2,13 @@ package com.g25.mailer.user.controller;
 
 import com.g25.mailer.user.dto.AddUserRequest;
 import com.g25.mailer.user.dto.AddUserResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.g25.mailer.user.common.CommonResponse;
 import com.g25.mailer.user.service.UserService;
@@ -18,6 +16,7 @@ import com.g25.mailer.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -60,6 +59,20 @@ public class UserApiController {
         return CommonResponse.success(AddUserResponse.builder()
                 .email(request.getEmail())
                 .build());
+    }
+
+    //유저이미지 변경 - > 아직, 구현안된 메소드(dto, service코드)🍎
+    @PostMapping("/{userId}/profile-image")
+    public ResponseEntity<String> uploadProfileImage(@PathVariable Long userId,
+                                                     @RequestParam("file") MultipartFile file) {
+        String imageUrl = userService.uploadProfileImage(userId, file);
+        return ResponseEntity.ok(imageUrl);
+    }
+
+    @DeleteMapping("/{userId}/profile-image")
+    public ResponseEntity<String> deleteProfileImage(@PathVariable Long userId) {
+        userService.deleteProfileImage(userId);
+        return ResponseEntity.ok("Profile image reset to default.");
     }
 
 
