@@ -13,14 +13,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "temporary_saves")
+@Table(name = "temporary_saves", indexes = {
+        @Index(name = "temp_save_id", columnList = "user_id")
+})//id로 인덱스 걸기
 public class TemporarySave {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     // 어떤 사용자가 임시저장했는지 연관관계 설정
+    // [] 인덱스 걸기
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

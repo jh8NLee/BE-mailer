@@ -3,11 +3,6 @@ package com.g25.mailer.user.controller;
 import com.g25.mailer.user.dto.AddUserRequest;
 import com.g25.mailer.user.dto.AddUserResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import com.g25.mailer.user.common.CommonResponse;
@@ -18,50 +13,44 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class UserApiController {
 
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
 
-    // [QUIZ] 아래 에러 수정하기
-    //회원가입
+    // 회원가입
     @PostMapping("/user")
     public CommonResponse<AddUserResponse> signup(@RequestBody AddUserRequest request) {
-        Long id = userService.save(request); // 회원 저장 메서드 호출
+        Long id = userService.save(request);
 
         return CommonResponse.success(AddUserResponse.builder()
                 .email(request.getEmail())
                 .build());
     }
 
-    //로그아웃
+    // 로그아웃 (Spring Security 제거 후 직접 구현 필요)
     @GetMapping("/logout")
     public CommonResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler()
-                .logout(request, response, SecurityContextHolder.getContext().getAuthentication()); //핸들러가 logout메서드 호출 & 로그아웃
+        // TODO: 세션 무효화 로직 추가 필요
         return CommonResponse.success();
     }
 
-    //로그인
+    // 로그인 (Spring Security 없이 직접 검증)
     @PostMapping("/login")
     public CommonResponse<AddUserResponse> login(@RequestBody AddUserRequest request) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
-
-        // 인증 시도
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 직접 로그인 로직 구현
+        boolean isAuthenticated = userService.authenticate(request.getEmail(), request.getPassword());
+        if (!isAuthenticated) {
+            throw new RuntimeException("로그인 실패: 이메일 또는 비밀번호가 잘못되었습니다.");
+        }
 
         return CommonResponse.success(AddUserResponse.builder()
                 .email(request.getEmail())
                 .build());
     }
 
-    //유저이미지 변경 - > 아직, 구현안된 메소드(dto, service코드)🍎
+    // 유저 프로필 이미지 업로드
     @PostMapping("/{userId}/profile-image")
     public ResponseEntity<String> uploadProfileImage(@PathVariable Long userId,
                                                      @RequestParam("file") MultipartFile file) {
@@ -69,56 +58,10 @@ public class UserApiController {
         return ResponseEntity.ok(imageUrl);
     }
 
+    // 유저 프로필 이미지 삭제
     @DeleteMapping("/{userId}/profile-image")
     public ResponseEntity<String> deleteProfileImage(@PathVariable Long userId) {
         userService.deleteProfileImage(userId);
-        return ResponseEntity.ok("Profile image reset to default.");
+        return ResponseEntity.ok("기본 이미지로 설정하였습니다.");
     }
-
-
-//    // CREATE: 사용자 등록
-//    @PostMapping
-//    public ResponseEntity<User> createUser(@RequestBody User user) {
-//        if (userRepository.existsByLoginId(user.getLoginId()) || userRepository.existsByEmail(
-//                user.getEmail())) {
-//            return ResponseEntity.badRequest().body(null);
-//        }
-//        User savedUser = userRepository.save(user);
-//        return ResponseEntity.created(URI.create("/api/users/" + savedUser.getId())).body(savedUser);
-//    }
-
-
-//
-//    // READ: 특정 사용자 조회
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-//        Optional<User> user = userRepository.findById(id);
-//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // UPDATE: 사용자 정보 수정
-//    @PutMapping("/{id}")
-//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-//        return userRepository.findById(id).map(existingUser -> {
-//            existingUser.setName(updatedUser.getName());
-//            existingUser.setEmail(updatedUser.getEmail());
-//            existingUser.setContact(updatedUser.getContact());
-//            existingUser.setRole(updatedUser.getRole());
-//            existingUser.setStatus(updatedUser.getStatus());
-//            User savedUser = userRepository.save(existingUser);
-//            return ResponseEntity.ok(savedUser);
-//        }).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // DELETE: 사용자 삭제
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-//        if (userRepository.existsById(id)) {
-//            userRepository.deleteById(id);
-//            return ResponseEntity.noContent().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 }
-

@@ -2,18 +2,13 @@ package com.g25.mailer.user.controller;
 
 import com.g25.mailer.user.dto.TemporarySaveRequest;
 import com.g25.mailer.user.entity.TemporarySave;
-import com.g25.mailer.user.entity.User;
-import com.g25.mailer.user.repository.TemporarySaveRepository;
 import com.g25.mailer.user.service.TemporarySaveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/temporary-saves")
@@ -23,15 +18,12 @@ public class TemporarySaveController {
 
     private final TemporarySaveService temporarySaveService;
 
+    @PostMapping("/write")
+    public ResponseEntity<TemporarySave> createTemporarySave(@RequestBody TemporarySaveRequest request) {
 
-    // [API] 임시저장 생성 (POST)
-    @PostMapping
-    public ResponseEntity<TemporarySave> createTemporarySave(
-            @AuthenticationPrincipal User user,
-            @RequestBody TemporarySaveRequest request) {
+        log.info("임시 저장 요청: content = {}", request.getContent());
 
         TemporarySave temporarySave = TemporarySave.builder()
-                .user(user)
                 .content(request.getContent())
                 .build();
 
@@ -39,35 +31,34 @@ public class TemporarySaveController {
         return ResponseEntity.ok(saved);
     }
 
-    // [API] 단일 임시저장 조회 (GET)
-    @GetMapping("/{id}")
+    // [API] 단일 임시저장 조회
+    @GetMapping("/show/{id}")
     public ResponseEntity<TemporarySave> getTemporarySave(@PathVariable Long id) {
         TemporarySave temporarySave = temporarySaveService.getTemporarySave(id);
         return ResponseEntity.ok(temporarySave);
     }
 
-    // [API] 임시저장 목록 조회 (GET)
-    @GetMapping
-    public ResponseEntity<List<TemporarySave>> listTemporarySaves(@AuthenticationPrincipal User user) {
-        List<TemporarySave> saves = temporarySaveService.listTemporarySaves(user);
+    // [API] 임시저장 목록 조회 (사용자 인증 제거)
+    @GetMapping("/list")
+    public ResponseEntity<List<TemporarySave>> listTemporarySaves() {
+        List<TemporarySave> saves = temporarySaveService.listTemporarySaves();
         return ResponseEntity.ok(saves);
     }
 
-    // [API] 임시저장 목록 전체 삭제
-    public ResponseEntity<List<TemporarySave>> deleteAllTemp(@AuthenticationPrincipal User user) {
-        List<TemporarySave> theDeleted = temporarySaveService.deleteAllTemporarySaves(user);
+    // [API] 임시저장 목록 전체 삭제 (사용자 인증 제거)
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<Void> deleteAllTemp() {
+        temporarySaveService.deleteAllTemporarySaves();
         log.info("전체 삭제 완료");
-        return ResponseEntity.ok(theDeleted);
+        return ResponseEntity.noContent().build();
     }
 
-
-    // [API] 임시저장 목록 단건 삭제
-    public ResponseEntity<List<TemporarySave>> deleteSingleTemp(@PathVariable Long id, @AuthenticationPrincipal User user){
-        List<TemporarySave> theDeleted = temporarySaveService.deleteSingleTemp(id, user);
-        log.info("단건 삭제 완료");
-        return ResponseEntity.ok(theDeleted);
+    // [API] 임시저장 목록 단건 삭제 (사용자 인증 제거)
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteSingleTemp(@PathVariable Long id) {
+        temporarySaveService.deleteSingleTemp(id);
+        log.info("단건 삭제 완료 : ID = {}", id);
+        return ResponseEntity.noContent().build();
     }
 
 }
-
-
