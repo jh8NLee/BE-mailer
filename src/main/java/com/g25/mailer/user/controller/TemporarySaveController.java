@@ -2,6 +2,7 @@ package com.g25.mailer.user.controller;
 
 import com.g25.mailer.user.dto.TemporarySaveRequest;
 import com.g25.mailer.user.entity.TemporarySave;
+import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.service.TemporarySaveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,10 @@ public class TemporarySaveController {
     public ResponseEntity<TemporarySave> createTemporarySave(@RequestBody TemporarySaveRequest request) {
 
         log.info("임시 저장 요청: content = {}", request.getContent());
-
+        User user = new User(request.getUserId()); //userId로 이메일받아오고 객체생성(메서드)하기
         TemporarySave temporarySave = TemporarySave.builder()
                 .content(request.getContent())
+                .user(user) //여기에 유저객제넣음
                 .build();
 
         TemporarySave saved = temporarySaveService.saveTemporary(temporarySave);

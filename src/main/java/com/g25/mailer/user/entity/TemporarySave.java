@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "temporary_saves", indexes = {
-        @Index(name = "temp_save_id", columnList = "user_id")
+        @Index(name = "user_id", columnList = "user_id")
 })//id로 인덱스 걸기
 public class TemporarySave {
 
@@ -24,7 +24,7 @@ public class TemporarySave {
     private Long id;
 
     // 어떤 사용자가 임시저장했는지 연관관계 설정
-    // [] 인덱스 걸기
+    // [] 인덱스 걸기 -> 걸었음
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

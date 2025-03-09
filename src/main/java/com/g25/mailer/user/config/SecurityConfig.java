@@ -44,17 +44,17 @@ public class SecurityConfig {
     }
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/api/temporary-saves/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .httpBasic(httpBasic -> httpBasic.disable())  // 기본 인증 비활성화
-                .build();
-    }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(AbstractHttpConfigurer::disable)  // CSRF 비활성화
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/login", "/signup", "/api/temporary-saves/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .httpBasic(AbstractHttpConfigurer::disable)  // 기본 인증 비활성화
+//                .build();
+//    }
 
 
 }

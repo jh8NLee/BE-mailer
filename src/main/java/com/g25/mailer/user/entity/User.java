@@ -56,6 +56,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    //임시저장에서 사용하는 메서드
+    @Builder
+    public User(String email){
+        this.email = email;
+    }
+
+
     //권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
