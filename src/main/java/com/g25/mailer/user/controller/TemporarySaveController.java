@@ -25,32 +25,14 @@ public class TemporarySaveController {
     @PostMapping("/write")
     public ResponseEntity<TemporarySave> createTemporarySave(@RequestBody TemporarySaveRequest request) {
         log.info("임시 저장 content = {}", request.getContent());
-
         User user = userService.getUserByEmail(request.getEmail());
-
-        //생성확인용
-        if (user == null) {
-            log.error("User 객체를 찾을 수 없습니다. email: {}", request.getEmail());
-            return ResponseEntity.badRequest().build();
-        }else {
-            log.info("유저생성완료");
-        }
-
         TemporarySave temporarySave = TemporarySave.builder()
                 .content(request.getContent())
                 .user(user)
                 .build();
-
-        //생성확인용
-        if (temporarySave == null) {
-            log.error("TemporarySave 객체 생성 실패!");
-            return ResponseEntity.badRequest().build();
-        }
         TemporarySave saved = temporarySaveService.saveTemporary(temporarySave);
-
         return ResponseEntity.ok(saved);
     }
-
 
     // [API] 목록 조회 (사용자 인증 제거는 미구현)
     @GetMapping("/list")

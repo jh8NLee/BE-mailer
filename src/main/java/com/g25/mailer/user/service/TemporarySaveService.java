@@ -1,18 +1,19 @@
 package com.g25.mailer.user.service;
 
-import com.g25.mailer.user.entity.TemporarySave;
-
-import com.g25.mailer.user.repository.TemporarySaveRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.g25.mailer.user.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.g25.mailer.user.entity.TemporarySave;
+import com.g25.mailer.user.repository.TemporarySaveRepository;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = false)
+@Transactional
 public class TemporarySaveService {
 
     private final TemporarySaveRepository temporarySaveRepository;
