@@ -13,8 +13,6 @@ public class AddUserRequest {
     @NotNull
     private String password;
 
-    private String content;
-
     public User toEntity(){
         return User.builder()
                 .email(email)

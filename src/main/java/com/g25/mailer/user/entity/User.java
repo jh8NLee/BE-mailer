@@ -3,6 +3,7 @@ package com.g25.mailer.user.entity;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Hibernate 프록시 무시
 public class User implements UserDetails {
 
     @Id
@@ -45,13 +47,13 @@ public class User implements UserDetails {
     public User(String email, String password, Theme theme) {
         this.email = email;
         this.password = password;
-        // theme 값이 null일 경우 기본값으로 LIGHT 설정
-        this.theme = theme != null ? theme : Theme.LIGHT;
+
+        this.theme = theme != null ? theme : Theme.LIGHT; //테마 설정
     }
 
 
     @Builder
-    public User(String email, String password, String auth) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
     }

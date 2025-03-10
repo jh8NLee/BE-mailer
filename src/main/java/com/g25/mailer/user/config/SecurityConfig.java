@@ -39,22 +39,10 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                 )
-                .csrf(csrf -> csrf.disable()) // ✅ 최신 방식
+                .csrf(AbstractHttpConfigurer::disable) //아직 이해못했음.. 람다식으로 변경함.
                 .build();
     }
 
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(AbstractHttpConfigurer::disable)  // CSRF 비활성화
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/login", "/signup", "/api/temporary-saves/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(AbstractHttpConfigurer::disable)  // 기본 인증 비활성화
-//                .build();
-//    }
 
 
 }

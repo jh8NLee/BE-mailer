@@ -1,26 +1,29 @@
 package com.g25.mailer.user.service;
 
 import com.g25.mailer.user.entity.TemporarySave;
-import com.g25.mailer.user.entity.User;
+
 import com.g25.mailer.user.repository.TemporarySaveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
+import com.g25.mailer.user.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = false)
 public class TemporarySaveService {
 
-
     private final TemporarySaveRepository temporarySaveRepository;
 
     // 임시저장 생성/저장
     public TemporarySave saveTemporary(TemporarySave temporarySave) {
-        temporarySave.setSavedAt(LocalDateTime.now());
+        Optional<TemporarySave> existingSave = temporarySaveRepository.findByUserAndContent(temporarySave.getUser(), temporarySave.getContent());
+        if (existingSave.isPresent()) {
+            throw new IllegalStateException("이미 동일한 내용이 저장되어 있습니다.");
+        }
+
         return temporarySaveRepository.save(temporarySave);
     }
 

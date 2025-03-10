@@ -1,5 +1,6 @@
 package com.g25.mailer.user.service;
 
+import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,16 @@ public class UserDetailService implements UserDetailsService {
 
 
     }
+
+    //이메일받고 유저객체 리턴
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email + "는 존재하지 않는 계정입니다."));
+    }
+
+
+
+
 
 }
 

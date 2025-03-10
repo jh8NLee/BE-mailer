@@ -1,9 +1,11 @@
 package com.g25.mailer.user.controller;
 
 import com.g25.mailer.user.dto.TemporarySaveRequest;
+import com.g25.mailer.user.dto.TemporarySaveResponse;
 import com.g25.mailer.user.entity.TemporarySave;
 import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.service.TemporarySaveService;
+import com.g25.mailer.user.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,33 +20,47 @@ import java.util.List;
 public class TemporarySaveController {
 
     private final TemporarySaveService temporarySaveService;
+    private final UserDetailService userService;
 
     @PostMapping("/write")
     public ResponseEntity<TemporarySave> createTemporarySave(@RequestBody TemporarySaveRequest request) {
+        log.info("임시 저장 content = {}", request.getContent());
 
-        log.info("임시 저장 요청: content = {}", request.getContent());
-        User user = new User(request.getUserId()); //userId로 이메일받아오고 객체생성(메서드)하기
+        User user = userService.getUserByEmail(request.getEmail());
+
+        //생성확인용
+        if (user == null) {
+            log.error("User 객체를 찾을 수 없습니다. email: {}", request.getEmail());
+            return ResponseEntity.badRequest().build();
+        }else {
+            log.info("유저생성완료");
+        }
+
         TemporarySave temporarySave = TemporarySave.builder()
                 .content(request.getContent())
-                .user(user) //여기에 유저객제넣음
+                .user(user)
                 .build();
 
+        //생성확인용
+        if (temporarySave == null) {
+            log.error("TemporarySave 객체 생성 실패!");
+            return ResponseEntity.badRequest().build();
+        }
         TemporarySave saved = temporarySaveService.saveTemporary(temporarySave);
+
         return ResponseEntity.ok(saved);
     }
 
-    // [API] 단일 임시저장 조회
-    @GetMapping("/show/{id}")
-    public ResponseEntity<TemporarySave> getTemporarySave(@PathVariable Long id) {
-        TemporarySave temporarySave = temporarySaveService.getTemporarySave(id);
-        return ResponseEntity.ok(temporarySave);
-    }
 
-    // [API] 임시저장 목록 조회 (사용자 인증 제거)
+    // [API] 목록 조회 (사용자 인증 제거는 미구현)
     @GetMapping("/list")
-    public ResponseEntity<List<TemporarySave>> listTemporarySaves() {
+    public ResponseEntity<List<TemporarySaveResponse>> listTemporarySaves() {
         List<TemporarySave> saves = temporarySaveService.listTemporarySaves();
-        return ResponseEntity.ok(saves);
+        List<TemporarySaveResponse> response = saves.stream()
+                .map(TemporarySaveResponse::new)
+                .toList();
+
+        return ResponseEntity.ok(response);
     }
 
     // [API] 임시저장 목록 전체 삭제 (사용자 인증 제거)

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TemporarySaveRepository extends JpaRepository<TemporarySave, Long> {
@@ -13,5 +14,5 @@ public interface TemporarySaveRepository extends JpaRepository<TemporarySave, Lo
     List<TemporarySave> findByUser(User user);
     int deleteByUser(User user);
     int deleteByIdAndUser(Long id, User user);
-
+    Optional<TemporarySave> findByUserAndContent(User user, String content);
 }

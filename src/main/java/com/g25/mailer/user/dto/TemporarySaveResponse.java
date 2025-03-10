@@ -1,18 +1,19 @@
 package com.g25.mailer.user.dto;
 
-import com.g25.mailer.user.entity.User;
-import jakarta.validation.constraints.NotNull;
+import com.g25.mailer.user.entity.TemporarySave;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
+
+@Getter
 public class TemporarySaveResponse {
+    private Long id;
+    private String content;
+    private LocalDateTime savedAt;
 
-    @NotNull  private String userId;
-
-    public User toEntity(){
-        return User.builder()
-                .email(userId)
-                .build();
+    public TemporarySaveResponse(TemporarySave temporarySave) {
+        this.id = temporarySave.getId(); //메시지 일련번호
+        this.content = temporarySave.getContent();
+        this.savedAt = temporarySave.getSavedAt();
     }
-
-
-
 }
