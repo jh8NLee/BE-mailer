@@ -20,8 +20,8 @@ public class TemporarySaveService {
 
     // 임시저장 생성/저장
     public TemporarySave saveTemporary(TemporarySave temporarySave) {
-        Optional<TemporarySave> existingSave = temporarySaveRepository.findByUserAndContent(temporarySave.getUser(), temporarySave.getContent());
-        if (existingSave.isPresent()) {
+        Optional<TemporarySave> existingSaveOpt = temporarySaveRepository.findByUserAndContent(temporarySave.getUser(), temporarySave.getContent());
+        if (existingSaveOpt.isPresent()) {
             throw new IllegalStateException("이미 동일한 내용이 저장되어 있습니다.");
         }
 
