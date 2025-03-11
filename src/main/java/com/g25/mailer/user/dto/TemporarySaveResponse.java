@@ -1,6 +1,6 @@
 package com.g25.mailer.user.dto;
 
-import com.g25.mailer.user.controller.res.TemporarySaveRes;
+
 import com.g25.mailer.user.entity.TemporarySave;
 
 import lombok.Builder;

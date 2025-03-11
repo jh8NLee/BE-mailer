@@ -1,9 +1,6 @@
 package com.g25.mailer.user.dto;
 
-import com.g25.mailer.user.entity.TemporarySave;
-import com.g25.mailer.user.entity.User;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
