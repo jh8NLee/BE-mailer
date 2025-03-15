@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface TargetRepository extends JpaRepository<Target, Long> {
-    Optional<Target> findTargetByTargetNameEquals(String target);
+    Optional<Target> findByTargetName(String targetName);
+
 }
