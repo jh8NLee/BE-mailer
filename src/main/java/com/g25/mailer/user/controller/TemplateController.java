@@ -1,8 +1,6 @@
 package com.g25.mailer.user.controller;
 
-import com.g25.mailer.user.dto.TemplateRequest;
 import com.g25.mailer.user.dto.TemplateResponse;
-import com.g25.mailer.user.entity.Template;
 import com.g25.mailer.user.service.TemplateService;
 
 import jakarta.mail.MessagingException;
@@ -12,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 @Slf4j
 @RestController
 @RequestMapping("/templates")

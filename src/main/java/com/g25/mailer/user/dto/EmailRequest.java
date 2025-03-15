@@ -1,13 +1,12 @@
 package com.g25.mailer.user.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class EmailRequest {
     private String to;
-    private String subject;
+    private String subject; //제목
     private String content;
 
 }
+

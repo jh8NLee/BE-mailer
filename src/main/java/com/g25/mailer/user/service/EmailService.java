@@ -18,16 +18,16 @@ public class EmailService {
     /**
      * 이메일을 전송하는 메서드
      * @param to 받는 사람 이메일
-     * @param subject 이메일 제목
+     * @param title 이메일 제목
      * @param content 이메일 내용
      */
-    public void sendMail(String to, String subject, String content) {
+    public void sendMail(String to, String title, String content) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
             helper.setTo(to);
-            helper.setSubject(subject);
+            helper.setSubject(title);
             helper.setText(content, true);
 
             mailSender.send(message);
