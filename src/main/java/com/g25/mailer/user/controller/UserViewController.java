@@ -2,8 +2,11 @@ package com.g25.mailer.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/view")
 public class UserViewController {
 
     // /login 로 들어오는 GET 요청을 이 메서드가 처리합니다

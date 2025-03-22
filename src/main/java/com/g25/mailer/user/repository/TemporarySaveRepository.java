@@ -1,10 +1,8 @@
 package com.g25.mailer.user.repository;
 
-import com.g25.mailer.user.dto.TemporarySaveResponse;
 import com.g25.mailer.user.entity.TemporarySave;
 import com.g25.mailer.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

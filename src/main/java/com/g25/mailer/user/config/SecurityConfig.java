@@ -11,29 +11,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
-@EnableWebSecurity
-@RequiredArgsConstructor
+//@EnableWebSecurity
 public class SecurityConfig {
-
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/login"),
-                                new AntPathRequestMatcher("/signup"),
-                                new AntPathRequestMatcher("/user"),
-                                new AntPathRequestMatcher("/api/temporary-saves/**"),
-                                new AntPathRequestMatcher("/templates/**") //
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true)
-                )
-                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 비활성화
-                .build();
+                        .anyRequest().permitAll()
+                );
+
+        return http.build();
     }
 }
