@@ -84,22 +84,18 @@ public class EmailService {
             helper.setText(content, true);
 
             for (String key : fileKeys) {
-                S3Object s3Object = s3Service.getObject(key);
-                S3ObjectInputStream inputStream = s3Object.getObjectContent();
                 String originalFilename = key.substring(key.lastIndexOf("/") + 1);
 
-                helper.addAttachment(originalFilename, new InputStreamSource() {
-                    @Override
-                    public InputStream getInputStream() throws IOException {
-                        return inputStream;
-                    }
+                // InputStreamSource가 새 InputStream을 반환하도록 수정
+                helper.addAttachment(originalFilename, (InputStreamSource) () -> {
+                    return s3Service.getObject(bucket, key).getObjectContent();
                 });
             }
 
             mailSender.send(message);
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("메일 전송 중 오류가 발생했습니다.", e);
         }
 
 
