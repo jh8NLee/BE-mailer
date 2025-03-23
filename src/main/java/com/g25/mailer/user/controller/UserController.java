@@ -72,11 +72,13 @@ public class UserController {
     /**
      * TODO : 유저 프로필 사진 업로드 (서버사이드)
      * 클라이언트 사이드
-     * 클라이언트쪽에서 s3 URL를 서버로 넘겨준다 -> 서버는 String으로 들어온 URL 를 저장
+     *  클라이언트쪽에서 s3 URL를 서버로 넘겨준다 -> 서버는 String으로 들어온 URL 를 저장
      *
      *
      * 서버사이드 <- 이걸로 구현
-     * 서버가 multipart타입으로받아 s3에 등록 -> url받아  Db에 값으로 저장
+     * 1. 클라이언트가 multipart/form-data로 요청
+     * 2. 서버가 S3Uploader.uploadProfileImg() 호출
+     * 3. 해당 URL을 DB에 저장 (→ service에서 처리)
      *
      * @param request
      * @param session
@@ -96,7 +98,21 @@ public class UserController {
         return ResponseEntity.ok(CommonResponse.success(Url));
     }
 
+    /**
+     * 유저 프로필 이미지 삭제(파일 삭제)
+     * @param session
+     * @return
+     */
+    @DeleteMapping("/setting/img")
+    public ResponseEntity<CommonResponse<String>> deleteProfileImage(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).body(CommonResponse.fail("로그인이 필요합니다."));
+        }
 
+        userService.deleteProfileImage(userId);
+        return ResponseEntity.ok(CommonResponse.success("프로필 이미지가 삭제되었습니다."));
+    }
 
 
     /**

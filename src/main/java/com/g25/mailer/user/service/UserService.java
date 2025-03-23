@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +30,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final S3Uploader s3Uploader;
 
     private static final String PROFILE_IMAGE_DIR = "uploads/profile_images/";
 
@@ -182,6 +186,39 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."))
                 .getId();
+    }
+
+
+    /**e
+     * 유저 프로필 이미지 삭제
+     */
+    @Transactional
+    public void deleteProfileImage(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        String key = extractKeyFromUrl(user.getProfileImageUrl()); //S3에서 삭제할 파일명확장자포함(key) 추출
+
+        if (key != null) {
+            s3Uploader.deleteObject(key); // S3에서 삭제
+        }
+        user.setProfileImageUrl(null); // DB에서 제거
+    }
+
+    /**
+     * 파일명과 확장자만 골라오기
+     * @param profileImageUrl
+     * @return
+     */
+    // 예: https://bucket.s3.amazonaws.com/profile-img/abc.jpg → profile-img/abc.jpg
+    private String extractKeyFromUrl(String profileImageUrl) {
+        if (profileImageUrl == null || profileImageUrl.isBlank()) return null;
+        try {
+            URL parsedUrl = new URL(profileImageUrl);
+            return parsedUrl.getPath().substring(1); // 맨 앞 '/' 제거
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
 
