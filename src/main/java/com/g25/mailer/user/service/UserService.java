@@ -1,10 +1,8 @@
 package com.g25.mailer.user.service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.g25.mailer.user.common.CommonResponse;
+
+import com.g25.mailer.common.CommonResponse;
+import com.g25.mailer.common.service.S3Uploader;
 import com.g25.mailer.user.dto.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
