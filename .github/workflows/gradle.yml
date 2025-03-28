@@ -79,19 +79,22 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem  
           chmod 400 private_key.pem
+          
+          scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/*.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/g25Server.jar
+
           ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
-          if pgrep -f g25Server.jar > /dev/null; then
-            echo "서버 실행 중 - 종료 중..."
-            pkill -f g25Server.jar
-          else
-            echo "서버가 실행되지 않음 - 새로 시작."
-          fi
-          nohup java -jar /home/${{ secrets.EC2_USERNAME }}/g25Server.jar > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
-          disown
+            if pgrep -f g25Server.jar > /dev/null; then
+              echo "서버 실행 중 - 종료 중..."
+              pkill -f g25Server.jar
+            else
+              echo "서버가 실행되지 않음 - 새로 시작."
+            fi
+            nohup java -jar /home/${{ secrets.EC2_USERNAME }}/g25Server.jar > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
+            disown
           EOF
+          
           rm -f private_key.pem
           
-          scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/g25Server-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/g25Server.jar
 
 #          ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
 #          "pkill -f g25Server.jar; nohup java -jar /home/${{ secrets.EC2_USERNAME }}/g25Server.jar > app.log 2>&1 &"
