@@ -69,8 +69,7 @@ jobs:
       - name: Check if JAR file exists after download
         run: ls -alh build/libs/
 
-
-      - name: Save EC2 private key
+      - name: Decode SSH Key
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > private_key.pem
           chmod 400 private_key.pem
