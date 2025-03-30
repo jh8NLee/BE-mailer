@@ -69,17 +69,17 @@ jobs:
       - name: Check if JAR file exists after download
         run: ls -alh build/libs/
 
-#      - name: Decode SSH Key
-#        run: |
-#          echo "${{ secrets.EC2_SSH_KEY }}"|base64 -d > private_key.pem
-#          chmod 400 private_key.pem
+      - name: Decode SSH Key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}"|base64 -d > private_key.pem
+          chmod 400 private_key.pem
 
       - name: Copy JAR to EC2
-        run: scp -i ${{ secrets.EC2_SSH_KEY }} build/libs/*.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/app/g25Server.jar
+        run: scp -i  private_key.pem build/libs/*.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/app/g25Server.jar
 
       - name: SSH into EC2 and restart service
         run: |
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          ssh -i  private_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
           if pgrep -f g25Server.jar > /dev/null; then
             echo "서버 실행 중 - 종료 중..."
             pkill -f g25Server.jar
