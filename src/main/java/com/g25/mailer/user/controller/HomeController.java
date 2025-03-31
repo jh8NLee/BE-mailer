@@ -21,6 +21,11 @@ public class HomeController {
 
     private final UserRepository userRepository;
 
+    @GetMapping
+    public String home() {
+        return "Welcome to Mailer";
+    }
+
     /**
      * 유저 이미지, 닉네임(이름) 받아오기
      * @param session

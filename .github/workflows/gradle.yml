@@ -88,5 +88,4 @@ jobs:
           disown
           EOF
 
-#      - name: Clean up private key
-#        run: rm -f private_key.pem
+
