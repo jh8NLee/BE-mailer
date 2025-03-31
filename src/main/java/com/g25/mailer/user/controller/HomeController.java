@@ -6,6 +6,7 @@ import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,18 @@ import java.util.Optional;
 public class HomeController {
 
     private final UserRepository userRepository;
+    @Value("${instance.name}")
+    private String instanceName;
 
-    @GetMapping
+    @GetMapping("/")
     public String home() {
-        return "Welcome to Mailer";
+        return " __        __   _                            _          __  __       _ _           _ \n" +
+                " \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___   |  \\/  | __ _(_) | ___ _ __| |\n" +
+                "  \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\  | |\\/| |/ _` | | |/ _ \\ '__| |\n" +
+                "   \\ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |  | | (_| | | |  __/ |  |_|\n" +
+                "    \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/  |_|  |_|\\__,_|_|_|\\___|_|  (_)\n" +
+                "                                                                                     "
+                + "Response from " + instanceName;
     }
 
     /**
