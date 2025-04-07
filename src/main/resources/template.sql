@@ -1,19 +1,13 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 DELETE FROM templates;
-DELETE FROM targets;
 DELETE FROM keywords;
 
 ALTER TABLE templates AUTO_INCREMENT = 1;
-ALTER TABLE targets AUTO_INCREMENT = 1;
 ALTER TABLE keywords AUTO_INCREMENT = 1;
 
 SET FOREIGN_KEY_CHECKS = 1;
--- Target (학생, 직장인) 삽입
-INSERT INTO targets (target_name)
-VALUES ('학생'), ('직장인');
 
--- Keyword 삽입
 INSERT INTO keywords (keyword)
 VALUES
     ('출결처리'), ('성적문의'), ('과제문의'), ('수강문의'),
