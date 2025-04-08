@@ -6,6 +6,8 @@ import com.g25.mailer.user.entity.User;
 import com.g25.mailer.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,10 @@ import java.util.Optional;
 public class HomeController {
 
     private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+    @Value("${name}")
+    private String name;
 
     @GetMapping("/")
     public String home() {
