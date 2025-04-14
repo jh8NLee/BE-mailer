@@ -1,15 +1,11 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.1'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.1.7'
+	id 'io.spring.dependency-management' version '1.1.3'
 }
 
-ext {
-	springCloudVersion = "2024.0.1"
-}
 
 group = 'com.g25'
-version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
@@ -26,16 +22,25 @@ configurations {
 repositories {
 	mavenCentral()
 }
+ext {
+	springCloudVersion ='2022.0.5' // spring과 호환성
+}
+
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mail' //mail
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework:spring-web:6.0.11'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-	//feign
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -67,8 +72,13 @@ dependencies {
 	//logback - slack
 	implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 
+	//feign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
 
 }
+
+
 
 tasks.named('test') {
 	useJUnitPlatform()
@@ -80,10 +90,4 @@ bootJar {
 }
 jar{
 	archiveBaseName.set('g25Server')
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
-	}
 }
