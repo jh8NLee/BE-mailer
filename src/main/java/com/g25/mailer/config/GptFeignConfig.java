@@ -4,17 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Logger;
 import feign.Request;
 import feign.codec.Decoder;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
-
 @Configuration
-@ImportAutoConfiguration({FeignAutoConfiguration.class})
 public class GptFeignConfig {
 
     @Bean
